@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column; /* Change to column for mobile layout */
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: pink;
+      overflow: hidden;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px; /* Add margin for better spacing */
+    }
+
+    #header {
+      font-size: 24px; /* Decrease font size for better mobile readability */
+      font-weight: bold;
+      color: #8B008B;
+      margin-bottom: 10px;
+      text-align: center; /* Center text for better mobile layout */
+    }
+
+    #mediaContainer {
+      width: 100%; /* Make the media container full-width for mobile */
+      margin-bottom: 20px;
+    }
+
+    #leftVideo {
+      width: 100%;
+      height: auto; /* Allow the video height to adjust proportionally */
+      object-fit: cover;
+    }
+
+    #videoContainer {
+      width: 100%;
+      height: auto; /* Allow the container height to adjust proportionally */
+      overflow: hidden;
+    }
+
+    #buttonContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #button1,
+    #button2 {
+      padding: 10px;
+      font-size: 18px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 15px;
+    }
+
+    #button1 {
+      background-color: red;
+      color: white;
+    }
+
+    #button2 {
+      background-color: green;
+      color: white;
+      transition: width 0.5s, height 0.5s;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      animation: sparkleAnimation 1s linear infinite;
+    }
+
+    @keyframes sparkleAnimation {
+      to {
+        transform: translateY(-100px) rotate(360deg); /* Adjust the translateY for mobile */
+      }
+    }
+  </style>
+  <title>ASK HIM OUT!</title>
+</head>
+
+<body>
+
+  <div id="container">
+    <div id="header">WILL YOU BE MY VALENTINE</div>
+    <div id="mediaContainer">
+      <div id="videoContainer">
+        <video controls autoplay="true" id="leftVideo">
+          <source src="v6.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <div id="buttonContainer">
+      <button id="button1" onclick="increaseSize()">NO</button>
+      <button id="button2" onclick="toggleMedia(); createSparkles()">YES</button>
+    </div>
+  </div>
+
+  <div id="modal">
+    <!-- Content for the modal, if needed -->
+  </div>
+
+  <script>
+    var texts = [
+      "ARE YOU SURE!",
+      "REALLY SURE!",
+      "THINK AGAIN!",
+      "LAST CHANCE!",
+      "SURELY NEXT!",
+      "YOU MIGHT REGRET THIS!",
+      "GIVE IT ANOTHER THOUGHT!",
+      "ARE YOU ABSOLUTELY CERTAIN!",
+      "THIS COULD BE A MISTAKE!",
+      "HAVE A HEART!",
+      "DON'T BE SO COLD!",
+      "CHANGE OF HEART!",
+      "THINK IT AGAIN!",
+      "IS THIS YOUR FINAL ANSWER!",
+      "YOU ARE BREAKING MY HEART:)!"
+    ];
+
+    var currentIndex = 0;
+    var mediaChanged = false; // Flag to track if the media has been changed
+
+    function increaseSize() {
+      var button1 = document.getElementById('button1');
+      var button2 = document.getElementById('button2');
+
+      var currentSize = parseInt(window.getComputedStyle(button2).width);
+      var newSize = currentSize + 20;
+
+      button2.style.width = newSize + 'px';
+      button2.style.height = newSize + 'px';
+
+      // Change the text of the increase button while pressing
+      button1.innerText = texts[currentIndex];
+
+      // Cycle through the texts
+      currentIndex = (currentIndex + 1) % texts.length;
+
+      // Hide the media container when resizing
+      document.getElementById('videoContainer').style.display = 'none';
+    }
+
+    function toggleMedia() {
+      var videoContainer = document.getElementById('videoContainer');
+      var leftVideo = document.getElementById('leftVideo');
+
+      // Toggle between video and initial state
+      if (!mediaChanged) {
+        leftVideo.src = 'v1.mp4'; // Change the video source to v1
+        leftVideo.autoplay = true; // Enable autoplay for v1
+        videoContainer.style.display = 'flex';
+
+        mediaChanged = true; // Set the flag to true after changing the media
+      } else {
+        videoContainer.style.display = 'none';
+        mediaChanged = false; // Reset the flag when showing the initial state
+      }
+    }
+
+    function createSparkles() {
+      for (var i = 0; i < 50; i++) {
+        createSparkle();
+      }
+    }
+
+    function createSparkle() {
+      var sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
+      sparkle.style.left = Math.random() * document.getElementById('videoContainer').offsetWidth + 'px';
+      document.getElementById('videoContainer').appendChild(sparkle);
+
+      setTimeout(function () {
+        sparkle.remove();
+      }, 1000);
+    }
+  </script>
+
+</body>
+
+</html>
